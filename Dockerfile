@@ -27,12 +27,12 @@ COPY guiv2/ui/package*.json ./guiv2/ui/
 
 # Install server dependencies
 WORKDIR /app/guiv2/server
-RUN npm ci && \
+RUN npm install && \
     npm cache clean --force
 
 # Install UI dependencies
 WORKDIR /app/guiv2/ui
-RUN npm ci && \
+RUN npm install && \
     npm cache clean --force
 
 # Stage 3: Build
