@@ -22,8 +22,9 @@ export default defineConfig({
     },
   },
   server: {
+    host: "0.0.0.0",
     port: 5173,
-    open: true,
+    open: false,
     // Proxy API requests to the local server to avoid CORS in dev.
     proxy: {
       "/api": {

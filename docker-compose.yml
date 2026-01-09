@@ -1,23 +1,33 @@
-version: "3.8"
-
 services:
-  klmtovideo:
+  klmtovideo-dev:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - NODE_ENV=production
-    container_name: klmtovideo-app
+    container_name: klmtovideo-dev
     ports:
+      # Server API port
       - "3001:3001"
+      # Vite dev server port (UI hot reload)
+      - "5173:5173"
     volumes:
-      # Mount workspace directory to persist user data on host
-      - ./workspace:/app/guiv2/workspace
-      # Mount uploads directory to persist temporary uploads
+      # Mount entire guiv2 directory for hot reload
+      - ./guiv2:/app/guiv2
+
+      # Mount workspace directory to persist user data
+      - ./workspace:/app/workspace
+
+      # Mount uploads directory
       - ./uploads:/app/guiv2/server/uploads
+
+      # Use named volumes for node_modules to avoid overwriting
+      # This keeps installed packages inside container
+      - guiv2-node-modules:/app/guiv2/node_modules
+      - guiv2-server-node-modules:/app/guiv2/server/node_modules
+      - guiv2-ui-node-modules:/app/guiv2/ui/node_modules
+
     environment:
       # Application settings
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3001
 
       # SD video generation settings
@@ -30,33 +40,23 @@ services:
       - MAX_CONCURRENT_JOBS=3
       - JOB_CLEANUP_MS=30000
 
-    restart: unless-stopped
+    working_dir: /app/guiv2
 
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "require('http').get('http://localhost:3001/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
-        ]
-      interval: 30s
-      timeout: 5s
-      start_period: 15s
-      retries: 3
+    # Run the dev command from root package.json (concurrently runs server + ui)
+    command: sh -c "npm install && npm run install:all && npm run dev"
+
+    stdin_open: true
+    tty: true
 
     networks:
       - klmtovideo-network
 
-    # Resource limits (optional - adjust based on your needs)
+    # Optional resource limits for development
     deploy:
       resources:
         limits:
           cpus: "4.0"
           memory: 4G
-        reservations:
-          cpus: "1.0"
-          memory: 1G
 
     # Logging configuration
     logging:
@@ -64,6 +64,11 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+volumes:
+  guiv2-node-modules:
+  guiv2-server-node-modules:
+  guiv2-ui-node-modules:
 
 networks:
   klmtovideo-network:
