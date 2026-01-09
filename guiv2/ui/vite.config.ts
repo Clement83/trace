@@ -25,6 +25,8 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     open: false,
+    // Allow access from reverse proxy domain
+    allowedHosts: ["trace.quintard.me", "api.trace.quintard.me"],
     // Proxy API requests to the local server to avoid CORS in dev.
     proxy: {
       "/api": {
