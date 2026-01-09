@@ -91,10 +91,47 @@ docker-compose up -d
 |----------|---------|-------------|
 | `NODE_ENV` | `development` | Mode environnement |
 | `PORT` | `3001` | Port serveur |
+| `VITE_API_URL` | - | URL de l'API pour reverse proxy (ex: `https://api.trace.quintard.me`) |
 | `WORKSPACE_ROOT` | `./workspace` | Dossier workspace |
 | `SD_WIDTH` | `640` | Largeur vidéo SD |
 | `SD_CRF` | `28` | Qualité vidéo |
 | `MAX_CONCURRENT_JOBS` | `3` | Jobs simultanés |
+
+## 🌐 Configuration Reverse Proxy
+
+L'application est configurée pour fonctionner derrière un reverse proxy.
+
+### Configuration
+
+L'URL de l'API est définie dans `docker-compose.yml` via la variable `VITE_API_URL` :
+
+```yaml
+environment:
+  - VITE_API_URL=https://api.trace.quintard.me
+```
+
+### Exemple de configuration Nginx
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name api.trace.quintard.me;
+
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+**Note:** Le CORS est activé par défaut dans le backend pour supporter les requêtes cross-origin.
 
 ## 📄 License
 

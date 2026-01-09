@@ -1,4 +1,5 @@
 import type { JobProgressData, JobLog } from "../types";
+import { getApiUrl } from "./api";
 
 export function connectToJob(
   jobId: string,
@@ -9,9 +10,9 @@ export function connectToJob(
     onError?: (e: any) => void;
     onOpen?: () => void;
     onClose?: () => void;
-  }
+  },
 ) {
-  const url = `/api/encode/events/${jobId}`;
+  const url = getApiUrl(`/api/encode/events/${jobId}`);
   const es = new EventSource(url);
 
   es.onopen = () => handlers.onOpen?.();

@@ -16,7 +16,7 @@ import { Upload, Trash2 } from "lucide-react";
 import { useWorkspaceData } from "../hooks/useWorkspaceData";
 import { useJobManager } from "../hooks/useJobManager";
 import { useTimelinePlayer } from "../hooks/useTimelinePlayer";
-import { fetchJSON } from "../utils/api";
+import { fetchJSON, getApiUrl } from "../utils/api";
 import type { VideoMeta } from "../types";
 
 export function WorkspaceViewPage() {
@@ -33,7 +33,7 @@ export function WorkspaceViewPage() {
   const { meta, loading, error, setError, loadMeta } =
     useWorkspaceData(projectName);
   const { jobStates, lastJobActivity, attachJobSSE } = useJobManager(() =>
-    loadMeta(true)
+    loadMeta(true),
   );
   const {
     currentTime,
@@ -70,7 +70,7 @@ export function WorkspaceViewPage() {
       if (!projectName) return;
       try {
         const resp = await fetchJSON(
-          `/api/workspaces/${encodeURIComponent(projectName)}/lock`
+          `/api/workspaces/${encodeURIComponent(projectName)}/lock`,
         );
         if (mounted && resp && typeof resp.locked === "boolean") {
           setVideoEditingLocked(!!resp.locked);
@@ -95,7 +95,7 @@ export function WorkspaceViewPage() {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ locked }),
-        }
+        },
       );
       setVideoEditingLocked(locked);
     } catch (err: any) {
@@ -118,7 +118,7 @@ export function WorkspaceViewPage() {
       if (video.encodeStatus === "running" && video.encodeJobId) {
         if (!jobStates.has(video.encodeJobId)) {
           console.log(
-            `[Encode] Reconnecting to job ${video.encodeJobId} for ${video.name}`
+            `[Encode] Reconnecting to job ${video.encodeJobId} for ${video.name}`,
           );
           attachJobSSE(video.encodeJobId, video.name);
         }
@@ -135,7 +135,7 @@ export function WorkspaceViewPage() {
         v.timelineStart !== undefined &&
         v.timelineEnd !== undefined &&
         currentTime >= v.timelineStart &&
-        currentTime < v.timelineEnd
+        currentTime < v.timelineEnd,
     );
 
     return video || null;
@@ -151,26 +151,28 @@ export function WorkspaceViewPage() {
   // Get video URL for current video
   const currentVideoUrl = useMemo(() => {
     if (!currentVideo || !currentVideo.sdPath) return undefined;
-    return `/api/workspaces/${encodeURIComponent(
-      projectName
-    )}/videos/${encodeURIComponent(currentVideo.name)}/sd`;
+    return getApiUrl(
+      `/api/workspaces/${encodeURIComponent(
+        projectName,
+      )}/videos/${encodeURIComponent(currentVideo.name)}/sd`,
+    );
   }, [currentVideo, projectName]);
 
   // Handle video position update
   async function handleVideoPositionChange(
     videoName: string,
-    newStart: number
+    newStart: number,
   ) {
     try {
       await fetchJSON(
         `/api/workspaces/${encodeURIComponent(
-          projectName
+          projectName,
         )}/videos/${encodeURIComponent(videoName)}/position`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ timelineStart: newStart }),
-        }
+        },
       );
       await loadMeta(true);
     } catch (err: any) {
@@ -192,13 +194,13 @@ export function WorkspaceViewPage() {
     try {
       await fetchJSON(
         `/api/workspaces/${encodeURIComponent(
-          projectName
+          projectName,
         )}/videos/${encodeURIComponent(videoName)}/add-to-timeline`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ timelineStart }),
-        }
+        },
       );
       await loadMeta(true);
     } catch (err: any) {
@@ -211,9 +213,9 @@ export function WorkspaceViewPage() {
     try {
       await fetchJSON(
         `/api/workspaces/${encodeURIComponent(
-          projectName
+          projectName,
         )}/videos/${encodeURIComponent(videoName)}/remove-from-timeline`,
-        { method: "PATCH" }
+        { method: "PATCH" },
       );
       await loadMeta(true);
     } catch (err: any) {
@@ -225,7 +227,7 @@ export function WorkspaceViewPage() {
   async function deleteVideo(videoName: string) {
     if (
       !confirm(
-        `Êtes-vous sûr de vouloir supprimer définitivement la vidéo "${videoName}" ?\n\nCette action est irréversible.`
+        `Êtes-vous sûr de vouloir supprimer définitivement la vidéo "${videoName}" ?\n\nCette action est irréversible.`,
       )
     ) {
       return;
@@ -234,9 +236,9 @@ export function WorkspaceViewPage() {
     try {
       await fetchJSON(
         `/api/workspaces/${encodeURIComponent(
-          projectName
+          projectName,
         )}/videos/${encodeURIComponent(videoName)}`,
-        { method: "DELETE" }
+        { method: "DELETE" },
       );
       await loadMeta(true);
     } catch (err: any) {
@@ -254,7 +256,9 @@ export function WorkspaceViewPage() {
     setShowUpload(false);
 
     try {
-      const url = `/api/workspaces/${encodeURIComponent(projectName)}/videos`;
+      const url = getApiUrl(
+        `/api/workspaces/${encodeURIComponent(projectName)}/videos`,
+      );
       const xhr = new XMLHttpRequest();
 
       xhr.upload.addEventListener("progress", (e) => {
@@ -274,7 +278,7 @@ export function WorkspaceViewPage() {
         });
         xhr.addEventListener("error", () => reject(new Error("Upload failed")));
         xhr.addEventListener("abort", () =>
-          reject(new Error("Upload aborted"))
+          reject(new Error("Upload aborted")),
         );
       });
 
@@ -308,14 +312,14 @@ export function WorkspaceViewPage() {
 
       if (!video.timelineStart || !meta?.kmlSummary) {
         throw new Error(
-          "La vidéo doit être placée sur la timeline avant l'encodage"
+          "La vidéo doit être placée sur la timeline avant l'encodage",
         );
       }
 
       const offsetSeconds =
         (video.timelineStart - (meta.kmlSummary.start ?? 0)) / 1000;
 
-      const response = await fetch("/api/encode", {
+      const response = await fetch(getApiUrl("/api/encode"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -379,7 +383,7 @@ export function WorkspaceViewPage() {
 
   const videos = meta?.videos ?? [];
   const jobsArray = Array.from(jobStates.values()).sort(
-    (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0)
+    (a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0),
   );
 
   return (
