@@ -64,7 +64,7 @@ import multer from "multer";
 import fs from "fs/promises";
 import { mkdirSync, existsSync } from "fs";
 import path from "path";
-import workspace from "./workspace";
+import workspace from "./workspaceUtils";
 
 type ProgressEvent = { percent: number; message?: string };
 type LogEvent = { message: string; stream?: "stdout" | "stderr" | "system" };
