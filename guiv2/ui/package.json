@@ -1,0 +1,48 @@
+{
+  "name": "guiv2-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vite + React + TypeScript UI for guiv2 (offset input, start, progress via SSE)",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5174",
+    "lint": "eslint --ext .ts,.tsx src || true",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+  },
+  "dependencies": {
+    "@types/leaflet": "^1.9.21",
+    "guiv2": "file:..",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.562.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.0.0",
+    "postcss": "^8.4.0",
+    "prettier": "^2.8.0",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "vite",
+    "react",
+    "typescript",
+    "tailwind",
+    "sse",
+    "gui"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,123 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+*.so
+*.dll
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.Python
+
+# PyInstaller
+dist/
+build/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# Packaging
+*.egg
+*.whl
+
+# Distribution / coverage / test outputs
+.coverage
+coverage.*
+.cache
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+
+# Type checker caches
+.mypy_cache/
+.pyre/
+.pytype/
+
+# IDE/editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~.nib
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Environment / secrets
+.env
+.env.*
+secrets.*
+credentials.*
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Static/media/output (large/binary files)
+# Ignore by default to avoid committing videos, exports, and generated map images.
+# If you want to keep some media in the repo, add explicit exceptions below.
+# Ignore KML contents but allow an explicit .gitkeep in the directory to keep the folder tracked.
+kml/
+kml/**
+!kml/.gitkeep
+
+# Ignore video contents but allow an explicit .gitkeep in the directory to keep the folder tracked.
+video/
+video/**
+!video/.gitkeep
+
+output/
+output/**
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+*.ogv
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Generated map caches or temporary images
+*.cache
+maps_cache/
+map_tiles/
+thumbs/
+
+# Build artifacts from tools
+node_modules/
+yarn.lock
+package-lock.json
+
+# Misc
+*.bak
+*.orig
+*.tmp
+
+# Editor-specific
+.vscode/
+.idea/
+
+# Docker
+guiv2/workspace/
+guiv2/server/uploads/
+
+# Allow explicitly tracked files by un-ignoring them in .gitignore if needed:
+# Example: to keep a specific sample video tracked, add in .gitignore:
+# !video/sample.mp4

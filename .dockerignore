@@ -1,0 +1,61 @@
+# Node modules
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Development files
+.git/
+.gitignore
+*.md
+!README.md
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+*.test.js
+*.spec.js
+
+# Workspace (will be mounted as volume)
+guiv2/workspace/
+workspace/
+
+# Uploads (will be mounted as volume)
+guiv2/server/uploads/
+
+# Output files
+output/
+
+# KML test files (not needed in production)
+klm/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/

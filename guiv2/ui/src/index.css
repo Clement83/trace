@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Minimal resets and sensible defaults for the UI */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #f9fafb;
+  color: #111827;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Make buttons and inputs inherit font and be visually consistent */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Small utility for monospace code/log blocks */
+.code-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Courier New", monospace;
+  font-size: 0.8125rem;
+}
+
+/* Shimmer animation for indeterminate progress bar */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Scrollbar styling for log view (modern browsers) */
+.log-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.6) rgba(15, 23, 42, 0.06);
+}
+
+.log-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.log-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.6);
+  border-radius: 9999px;
+}
+
+.log-scroll::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.04);
+  border-radius: 9999px;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.zoom-in {
+  animation: zoom-in 0.2s ease-out;
+}
+
+.slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Leaflet map container fixes */
+.leaflet-container {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+/* Custom marker styles */
+.custom-marker {
+  background: transparent;
+  border: none;
+}
+
+/* Progress bar animation */
+.progress-smooth {
+  transition: width 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Focus styles */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}

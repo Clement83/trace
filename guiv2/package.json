@@ -1,0 +1,24 @@
+{
+  "name": "guiv2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Orchestrator for guiv2 (runs server and ui concurrently for development)",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "install:all": "npm run server:install && npm run ui:install",
+    "server:install": "npm --prefix server install",
+    "ui:install": "npm --prefix ui install",
+    "server:dev": "npm --prefix server run dev",
+    "ui:dev": "npm --prefix ui run dev",
+    "dev": "concurrently \"npm:server:dev\" \"npm:ui:dev\"",
+    "start": "npm run dev",
+    "build": "npm --prefix ui run build && npm --prefix server run build || true",
+    "lint": "echo \"No root lint configured\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "license": "MIT"
+}

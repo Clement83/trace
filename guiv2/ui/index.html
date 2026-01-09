@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>guiv2 — UI</title>
+
+        <!-- Vite entry: main.tsx -->
+        <script type="module" src="/src/main.tsx"></script>
+
+        <!-- Global styles (Tailwind directives should be in src/index.css) -->
+        <link rel="stylesheet" href="/src/index.css" />
+
+        <!--
+      Notes / placeholders:
+      - This HTML is the Vite entry for the UI.
+      - Tailwind v4 should be configured in the project (tailwind.config.cjs / postcss.config.cjs).
+      - src/index.css should contain Tailwind's base/components/utilities directives:
+          @tailwind base;
+          @tailwind components;
+          @tailwind utilities;
+      - For development, Vite will serve this file and load /src/main.tsx.
+      - In production the built files will be served (optionally) from the server or a static host.
+    --></head>
+
+    <body>
+        <div id="root"></div>
+
+        <!--
+      Lightweight noscript notice for users without JS:
+    -->
+        <noscript>
+            <div
+                style="
+                    padding: 16px;
+                    background: #fee;
+                    color: #600;
+                    text-align: center;
+                "
+            >
+                JavaScript is required to use this UI. Please enable JavaScript
+                in your browser.
+            </div>
+        </noscript>
+    </body>
+</html>
